@@ -22,7 +22,7 @@ MongoClient.connect("mongodb://localhost:27017/TodoApp", (err, client)=>{
   // })
 
 
-  db.collection("UserCollection").find({name : "subhi"}).toArray().then((data)=>{
+  db.collection("UserCollection").find({age : 23}).toArray().then((data)=>{
     console.log("users")
     console.log(JSON.stringify(data, undefined, 2))
   }).catch((err)=>{
