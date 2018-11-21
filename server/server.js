@@ -20,6 +20,16 @@ app.post("/todos", (req, res)=>{
   })
 })
 
+app.get("/todos", (req, res)=>{
+  Todo.find().then((data)=>{
+    res.send({
+      data:data
+    })
+  }).catch((err)=>{
+    res.send(err)
+  })
+})
+
 app.post("/users", (req, res)=>{
   var newUser = new user({
     email: req.body.email
