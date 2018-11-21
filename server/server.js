@@ -20,12 +20,25 @@ app.post("/todos", (req, res)=>{
   })
 })
 
-
-
+app.post("/users", (req, res)=>{
+  var newUser = new user({
+    email: req.body.email
+  })
+  newUser.save().then((data)=>{
+    res.send(data)
+  }).catch((err)=>{
+    res.send(err)
+  })
+})
 
 app.listen(3000, ()=>{
   console.log("started on 3000")
 })
+
+
+module.exports = {
+  app: app
+}
 
 
 
