@@ -21,9 +21,9 @@ app.post("/todos", (req, res)=>{
 })
 
 app.get("/todos", (req, res)=>{
-  Todo.find().then((data)=>{
+  Todo.find().then((todos)=>{
     res.send({
-      data:data
+      todos:todos
     })
   }).catch((err)=>{
     res.send(err)

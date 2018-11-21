@@ -5,18 +5,47 @@ const {app} = require("./../server.js")
 const {user} = require("./../models/user.js")
 const {Todo} = require("./../models/todo.js")
 
+var todos = [{
+  text: "first test todo"
+  },
+  {
+    text: "second test todo"
+  }]
+
+
 beforeEach((done)=>{
   Todo.remove({}).then(()=>{
-    return done()
-  })
+    return Todo.insertMany(todos)
+  }).then(()=> done())
 })
-beforeEach((done)=>{
-  user.remove({}).then(()=>{
-    return done()
+
+// beforeEach((done)=>{
+//   Todo.remove({}).then(()=>{
+//     return done()
+//   })
+// })
+// beforeEach((done)=>{
+//   user.remove({}).then(()=>{
+//     return done()
+//   })
+// })
+
+
+describe("GET /todos", ()=>{
+  it("get todos", (done)=>{
+    request(app)
+    .get("/todos")
+    .expect(200)
+    .expect((res)=>{
+      expect(res.body.todos.length).toBe(2)
+      // console.log(res.body.todos.length)
+    })
+    .end(done)
   })
 })
 
-describe("post/todos", ()=>{
+
+// describe("post/todos", ()=>{
   // it("should create new todo", (done)=>{
   //
   //   var text = "test todo text"
@@ -41,41 +70,41 @@ describe("post/todos", ()=>{
   //   });
   // });
 
-  it("should create a new user", (done)=>{
-    var email = "test@test.com"
-    request(app)
-    .post("/users")
-    .send({email})
-    .expect(200)
-    .expect((res)=>{
-      expect(res.body.email).toBe(email)
-      console.log(res.body.email)
-    })
-    .end((err, res)=>{
-      if(err){
-        return done(err)
-      }
-      user.find().then((data)=>{
-        expect(data.length).toBe(1)
-        expect(data[0].email).toBe(email)
-        done()
-      })
-    })
-  })
-
-  it("shouldn't add a new Todo", (done)=>{
-    request(app)
-    .post("/todos")
-    .send({})
-    .expect(400)
-    .end((err, res)=>{
-      if(err){
-        return done(err)
-      }
-      Todo.find().then((data)=>{
-        expect(data.length).toBe(0)
-        done()
-      })
-    })
-  })
-})
+//   it("should create a new user", (done)=>{
+//     var email = "test@test.com"
+//     request(app)
+//     .post("/users")
+//     .send({email})
+//     .expect(200)
+//     .expect((res)=>{
+//       expect(res.body.email).toBe(email)
+//       console.log(res.body.email)
+//     })
+//     .end((err, res)=>{
+//       if(err){
+//         return done(err)
+//       }
+//       user.find().then((data)=>{
+//         expect(data.length).toBe(1)
+//         expect(data[0].email).toBe(email)
+//         done()
+//       })
+//     })
+//   })
+//
+//   it("shouldn't add a new Todo", (done)=>{
+//     request(app)
+//     .post("/todos")
+//     .send({})
+//     .expect(400)
+//     .end((err, res)=>{
+//       if(err){
+//         return done(err)
+//       }
+//       Todo.find().then((data)=>{
+//         expect(data.length).toBe(0)
+//         done()
+//       })
+//     })
+//   })
+// })
