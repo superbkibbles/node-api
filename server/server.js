@@ -5,6 +5,11 @@ var {mongoose} = require("./db/mongoose.js")
 var {user} = require("./models/user")
 var {Todo} = require("./models/todo")
 
+var newUser = new user({
+  email: "test1@test.com"
+})
+newUser.save()
+
 var app = express()
 
 app.use(bodyParser.json());
