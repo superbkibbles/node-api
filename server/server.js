@@ -1,6 +1,7 @@
 const express = require("express")
 const bodyParser = require("body-parser")
 
+const {ObjectID} = require("mongodb")
 var {mongoose} = require("./db/mongoose.js")
 var {user} = require("./models/user")
 var {Todo} = require("./models/todo")
@@ -35,6 +36,23 @@ app.get("/todos", (req, res)=>{
   })
 })
 
+app.get("/todos/:id", (req, res)=>{
+  var todoId = req.params.id;
+
+  if (!ObjectID.isValid(todoId)) {
+    return res.status(404).send()
+  }
+  Todo.findById(todoId).then((todo)=>{
+    if(!todo){
+      return res.status(404).send()
+    }
+    res.send({todo: todo})
+    // res.send(todo)
+  }).catch(()=>{
+    res.status(400).send()
+  })
+})
+
 app.post("/users", (req, res)=>{
   var newUser = new user({
     email: req.body.email
@@ -46,7 +64,7 @@ app.post("/users", (req, res)=>{
   })
 })
 
-app.listen(3000, ()=>{
+app.listen(8080, ()=>{
   console.log("started on 3000")
 })
 

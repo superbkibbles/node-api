@@ -6,7 +6,7 @@ const {user} = require("./../server/models/user.js")
 
 // var id = "5bf5a7ccd42f2a156926a8c111"
 
-// if (ObjectID.isValid(id)) {
+// if (!ObjectID.isValid(id)) {
 //   console.log("id is not valid")
 // }
 //
@@ -35,7 +35,7 @@ const {user} = require("./../server/models/user.js")
 
 var userId = "5bf6d3d0211bca5920318dba"
 
-if (ObjectID.isValid(userId)) {
+if (!ObjectID.isValid(userId)) {
   console.log("not valid ID")
 }
 
