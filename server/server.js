@@ -1,7 +1,7 @@
 const express = require("express")
 const bodyParser = require("body-parser")
 
-const post = process.env.PORT || 3000
+const port = process.env.PORT || 3000
 const {ObjectID} = require("mongodb")
 var {mongoose} = require("./db/mongoose.js")
 var {user} = require("./models/user")
