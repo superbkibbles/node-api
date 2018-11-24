@@ -1,6 +1,7 @@
 const express = require("express")
 const bodyParser = require("body-parser")
 
+const post = process.env.PORT || 3000
 const {ObjectID} = require("mongodb")
 var {mongoose} = require("./db/mongoose.js")
 var {user} = require("./models/user")
@@ -64,8 +65,8 @@ app.post("/users", (req, res)=>{
   })
 })
 
-app.listen(8080, ()=>{
-  console.log("started on 3000")
+app.listen(port, ()=>{
+  console.log("started on "+ port)
 })
 
 
