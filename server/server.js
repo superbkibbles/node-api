@@ -69,7 +69,7 @@ app.delete("/todos/:id", (req, res)=>{
     res.status(400).send()
   })
 })
-
+// Updating Todos
 app.patch("/todos/:id", (req, res)=>{
   var todoId = req.params.id
   var body = _.pick(req.body, ['text', 'completed']);
