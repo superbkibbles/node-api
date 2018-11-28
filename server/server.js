@@ -9,6 +9,7 @@ const {ObjectID} = require("mongodb")
 var {mongoose} = require("./db/mongoose.js")
 var {User} = require("./models/user")
 var {Todo} = require("./models/todo")
+var {authenticate} = require("./middlewar/authenticate.js")
 
 var app = express()
 
@@ -110,6 +111,11 @@ app.get("/users", (req, res)=>{
   }).catch((err)=>{
     res.send(err)
   })
+})
+
+
+app.get("/user/me",authenticate , (req, res)=>{
+  res.send(req.user)
 })
 
 app.listen(port, ()=>{
