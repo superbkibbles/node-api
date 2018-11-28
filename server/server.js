@@ -7,13 +7,8 @@ const bodyParser = require("body-parser")
 const port = process.env.PORT
 const {ObjectID} = require("mongodb")
 var {mongoose} = require("./db/mongoose.js")
-var {user} = require("./models/user")
+var {User} = require("./models/user")
 var {Todo} = require("./models/todo")
-
-var newUser = new user({
-  email: "test1@test.com"
-})
-newUser.save()
 
 var app = express()
 
@@ -94,12 +89,24 @@ app.patch("/todos/:id", (req, res)=>{
   })
 })
 
+
+// posting user
 app.post("/users", (req, res)=>{
-  var newUser = new user({
-    email: req.body.email
+  var body = _.pick(req.body, ["email", "password"])
+  var user = new User(body)
+  user.save().then((data)=>{
+    return user.generateAuthToken()
+    // res.send(data)
+  }).then((token)=>{
+    res.header("x-auth", token).send(user)
+  }).catch((err)=>{
+    res.send(err)
   })
-  newUser.save().then((data)=>{
-    res.send(data)
+})
+
+app.get("/users", (req, res)=>{
+  User.find().then((todo)=>{
+    res.send(todo)
   }).catch((err)=>{
     res.send(err)
   })
@@ -107,6 +114,21 @@ app.post("/users", (req, res)=>{
 
 app.listen(port, ()=>{
   console.log("started on "+ port)
+})
+
+app.delete("/users/:id", (req, res)=>{
+  var userId = req.params.id
+  if (!ObjectID.isValid(userId)) {
+    return res.status(400).send()
+  }
+  User.findByIdAndRemove(userId).then((user)=>{
+    if (!user) {
+      return res.status(400).send()
+    }
+    res.send(user)
+  }).catch((err)=>{
+    res.status(404).send()
+  })
 })
 
 
