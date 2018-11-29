@@ -105,6 +105,7 @@ app.post("/users", (req, res)=>{
   })
 })
 
+// getting all users
 app.get("/users", (req, res)=>{
   User.find().then((todo)=>{
     res.send(todo)
