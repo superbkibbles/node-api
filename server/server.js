@@ -22,7 +22,7 @@ app.post("/todos", (req, res)=>{
   newTodo.save().then((data)=>{
     res.send(data)
   }).catch((err)=>{
-    res.send(err)
+    res.status(400).send()
   })
 })
 
@@ -101,16 +101,16 @@ app.post("/users", (req, res)=>{
   }).then((token)=>{
     res.header("x-auth", token).send(user)
   }).catch((err)=>{
-    res.send(err)
+    res.status(400).send()
   })
 })
 
 // getting all users
 app.get("/users", (req, res)=>{
-  User.find().then((todo)=>{
-    res.send(todo)
+  User.find().then((user)=>{
+    res.send(user)
   }).catch((err)=>{
-    res.send(err)
+    res.status(400).send()
   })
 })
 
