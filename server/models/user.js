@@ -1,8 +1,8 @@
-const mongoose  = require("mongoose")
-const validator = require("validator")
-const jwt = require("jsonwebtoken")
-const _ = require("lodash")
-const bcrypt = require("bcryptjs")
+const mongoose = require('mongoose');
+const validator = require('validator');
+const jwt = require('jsonwebtoken');
+const _ = require('lodash');
+const bcrypt = require('bcryptjs');
 
 var userSchema = new mongoose.Schema(
   {
@@ -19,7 +19,6 @@ var userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      select: false,
       required: true,
       minlength: 6
     },
@@ -70,19 +69,38 @@ userSchema.statics.findOneToken= function(token){
   })
 }
 
+userSchema.statics.findByCredentials = function(email, password){
+  var User = this;
+  return User.findOne({email}).then((user)=>{
+    if(!user){
+      return Promise.reject()
+    }
+    return new Promise((resolve, reject)=>{
+      bcrypt.compare(password, user.password, (err, res)=>{
+        if(res){
+         resolve(user)
+        }
+        else{
+        return reject(err)
+        }
+      })
+    })
+  })
+}
+
 userSchema.pre("save", function(next){
   var user = this;
+
   if(user.isModified("password")){
-    return bcrypt.genSalt(10, (err, salt)=>{
+   bcrypt.genSalt(10, (err, salt)=>{
      bcrypt.hash(user.password, salt,(err, hash)=>{
           user.password = hash
           next()
         })
       })
   }else{
-    return next()
+    next()
   }
-  next()
 })
 
 var User = mongoose.model("user", userSchema )
