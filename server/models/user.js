@@ -103,6 +103,17 @@ userSchema.pre("save", function(next){
   }
 })
 
+userSchema.methods.removeToken = function(token){
+  var user = this;
+  return user.update({
+    $pull:{
+      tokens:{
+        token: token
+      }
+    }
+  })
+  }
+
 var User = mongoose.model("user", userSchema )
 
 

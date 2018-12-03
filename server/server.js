@@ -132,6 +132,14 @@ app.post("/users/login", (req, res)=>{
   })
 })
 
+app.delete("/user/me/token",authenticate, (req, res)=>{
+  req.user.removeToken(req.token).then(()=>{
+    res.status(200).send()
+  }).catch(()=>{
+    res.status(400).send()
+  })
+})
+
 
 app.listen(port, ()=>{
   console.log("started on "+ port)
