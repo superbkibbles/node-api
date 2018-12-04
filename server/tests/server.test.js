@@ -128,6 +128,25 @@ describe("POST /users/login", ()=>{
   })
 })
 
+  describe("delete /user/me/token", ()=>{
+    it("should delete token", (done)=>{
+      var token = users[0].tokens[0].token
+      request(app)
+      .delete("/user/me/token")
+      .set("x-auth", token)
+      .expect(200)
+      .end((err, res)=>{
+        if(err){
+          return done(err)
+        }
+        User.findOne({email:users[0].email}).then((check)=>{
+          expect(check.tokens.length).toBe(0)
+          done()
+        }).catch( err => done(err))
+      })
+    })
+  })
+
 
 
 

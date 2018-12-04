@@ -119,7 +119,6 @@ app.get("/user/me",authenticate , (req, res)=>{
   res.send(req.user)
 })
 
-
 app.post("/users/login", (req, res)=>{
   var body = _.pick(req.body, ["email", "password"])
 
@@ -140,11 +139,6 @@ app.delete("/user/me/token",authenticate, (req, res)=>{
   })
 })
 
-
-app.listen(port, ()=>{
-  console.log("started on "+ port)
-})
-
 app.delete("/users/:id", (req, res)=>{
   var userId = req.params.id
   if (!ObjectID.isValid(userId)) {
@@ -158,6 +152,10 @@ app.delete("/users/:id", (req, res)=>{
   }).catch((err)=>{
     res.status(404).send()
   })
+})
+
+app.listen(port, ()=>{
+  console.log("started on "+ port)
 })
 
 
